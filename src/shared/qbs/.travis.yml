@@ -1,0 +1,93 @@
+#
+# Required environment variables in the travis config
+#
+# DOCKER_USERNAME
+#
+language: cpp
+
+git:
+  submodules: false
+
+env:
+  global:
+    - QT_INSTALL_DIR=~/Qt
+    - QT_VERSION=5.12.5
+    - QTCREATOR_VERSION=4.9.2
+
+stages:
+  - name: Build Qbs and and run autotests
+
+jobs:
+  include:
+    - &build-on-bionic
+      stage: Build Qbs and and run autotests
+      name: With Qbs on Ubuntu bionic (linux_gcc64)
+      env:
+        SERVICE=bionic
+      services:
+        - docker
+      before_install:
+        - docker-compose pull ${SERVICE}
+      script:
+        - docker-compose run --rm ${SERVICE} scripts/build-qbs-with-qbs.sh
+
+    - <<: *build-on-bionic
+      name: With QMake on Ubuntu bionic (linux_gcc64)
+      script:
+        - docker-compose run --rm ${SERVICE} scripts/build-qbs-with-qmake.sh
+
+    - <<: *build-on-bionic
+      name: With Qbs on Ubuntu bionic (mingw32_w64)
+      script:
+        - docker-compose run --rm ${SERVICE} qbs build profile:qt-mingw32_w64
+
+    - &build-on-macos
+      stage: Build Qbs and and run autotests
+      name: With Qbs on macOS (xcode 10.3)
+      os: osx
+      osx_image: xcode10.3
+      addons:
+        homebrew:
+          packages:
+            - p7zip
+          update: true
+      env:
+        # Address sanitizer slows autotests down too much.
+        # We would hit the maximum build time on Travis.
+        BUILD_OPTIONS=modules.qbsbuildconfig.enableAddressSanitizer:false
+        QMAKE_PATH=${QT_INSTALL_DIR}/${QT_VERSION}/clang_64/bin/qmake
+        PATH="${QT_INSTALL_DIR}/Qt Creator.app/Contents/MacOS:${PATH}"
+        QBS_BUILD_PROFILE=qt
+      before_install:
+        - ./scripts/install-qt.sh -d ${QT_INSTALL_DIR} --version ${QT_VERSION} qtbase qtdeclarative qttools qtscript
+        - ./scripts/install-qt.sh -d ${QT_INSTALL_DIR} --version ${QTCREATOR_VERSION} qtcreator
+        - pip2 install --user beautifulsoup4 lxml
+      script:
+        - qbs setup-toolchains --detect
+        - qbs setup-qt ${QMAKE_PATH} qt
+        - qbs config qt.baseProfile xcode-macosx-x86_64
+        - qbs config defaultProfile qt
+        - scripts/build-qbs-with-qbs.sh
+
+    - &build-on-windows
+      stage: Build Qbs and and run autotests
+      name: With Qbs on Windows (Visual Studio 2017)
+      os: windows
+      env:
+        # Need to build in release mode. Otherwise autotests would be too slow.
+        BUILD_OPTIONS="config:release"
+        QT_INSTALL_DIR=C:/Qt
+        QMAKE_PATH=${QT_INSTALL_DIR}/${QT_VERSION}/msvc2017_64/bin/qmake.exe
+        PATH="/c/Qt/Tools/QtCreator/bin:${PATH}"
+        WITH_DOCS=0
+        QBS_BUILD_PROFILE=qt
+      before_install:
+        # Install Qbs and Qt
+        - ./scripts/install-qt.sh -d ${QT_INSTALL_DIR} --version ${QT_VERSION} --toolchain win64_msvc2017_64 qtbase qtdeclarative qttools qtscript
+        - ./scripts/install-qt.sh -d ${QT_INSTALL_DIR} --version ${QTCREATOR_VERSION} qtcreator
+      script:
+        - qbs setup-toolchains --detect
+        - qbs setup-qt ${QMAKE_PATH} qt
+        - qbs config qt.baseProfile MSVC2017-x86
+        - qbs config defaultProfile qt
+        - scripts/build-qbs-with-qbs.sh
