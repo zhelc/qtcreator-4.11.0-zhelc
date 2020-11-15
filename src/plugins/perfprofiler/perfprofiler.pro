@@ -1,8 +1,6 @@
 TARGET = PerfProfiler
 TEMPLATE = lib
 
-QT += quick quickwidgets
-
 include(../../qtcreatorplugin.pri)
 include(perfprofiler_dependencies.pri)
 

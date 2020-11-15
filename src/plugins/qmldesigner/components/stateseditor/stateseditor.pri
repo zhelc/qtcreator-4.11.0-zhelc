@@ -1,4 +1,4 @@
-QT *= qml quick
+QT *= quick
 
 VPATH += $$PWD
 

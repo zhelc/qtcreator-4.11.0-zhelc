@@ -1,4 +1,3 @@
-QT *= qml
 
 HEADERS += \
     $$PWD/locator.h \

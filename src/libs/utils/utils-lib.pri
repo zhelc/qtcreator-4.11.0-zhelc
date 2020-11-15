@@ -12,8 +12,8 @@ shared {
         DEFINES += QTC_REL_TOOLS_PATH=$$shell_quote(\"$$relative_path($$IDE_LIBEXEC_PATH, $$IDE_BIN_PATH)\")
     }
 }
-
-QT += widgets gui network qml xml
+message("utils-lib.pri .1..................................")
+QT += widgets gui network xml
 
 CONFIG += exceptions # used by portlist.cpp, textfileformat.cpp, and ssh/*
 
@@ -288,7 +288,7 @@ FORMS += $$PWD/filewizardpage.ui \
     $$PWD/removefiledialog.ui
 
 RESOURCES += $$PWD/utils.qrc
-
+message("utils-lib.pri .2..................................")
 osx {
     HEADERS += \
         $$PWD/theme/theme_mac.h \
@@ -301,6 +301,8 @@ osx {
 
     LIBS += -framework Foundation -framework AppKit
 }
-
+message("utils-lib.pri .3..................................")
 include(touchbar/touchbar.pri)
+message("utils-lib.pri .4..................................")
 include(mimetypes/mimetypes.pri)
+message("utils-lib.pri .5..................................")

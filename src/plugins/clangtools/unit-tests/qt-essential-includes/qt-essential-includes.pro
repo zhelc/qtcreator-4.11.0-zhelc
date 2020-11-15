@@ -1,7 +1,6 @@
 QT += multimedia \
       multimediawidgets \
       network \
-      qml \
       quick \
       sql \
       testlib \

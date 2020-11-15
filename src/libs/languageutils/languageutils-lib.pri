@@ -3,7 +3,7 @@ shared {
 } else {
     DEFINES += LANGUAGEUTILS_BUILD_STATIC_LIB
 }
-
+message("languageutils.pri ..................................")
 HEADERS += \
     $$PWD/languageutils_global.h \
     $$PWD/fakemetaobject.h \

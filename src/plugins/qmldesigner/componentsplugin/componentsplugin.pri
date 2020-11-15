@@ -2,8 +2,6 @@ TARGET = componentsplugin
 TEMPLATE = lib
 CONFIG += plugin
 
-QT += qml
-
 include (../designercore/iwidgetplugin.pri)
 include (../qmldesigner_dependencies.pri)
 

@@ -35,13 +35,13 @@ SUBDIRS += \
 
 include(../shared/yaml-cpp/yaml-cpp_installation.pri)
 isEmpty(EXTERNAL_YAML_CPP_FOUND): SUBDIRS += 3rdparty/yaml-cpp
-
+message("libs.pro .1..................................")
 isEmpty(KSYNTAXHIGHLIGHTING_LIB_DIR): KSYNTAXHIGHLIGHTING_LIB_DIR=$$(KSYNTAXHIGHLIGHTING_LIB_DIR)
 !isEmpty(KSYNTAXHIGHLIGHTING_LIB_DIR) {
     # enable short information message
     KSYNTAX_WARN_ON = 1
 }
-
+message("libs.pro .2..................................")
 include(../shared/syntax/syntax_shared.pri)
 isEmpty(KSYNTAXHIGHLIGHTING_LIB_DIR) {
     SUBDIRS += \
@@ -55,9 +55,9 @@ isEmpty(KSYNTAXHIGHLIGHTING_LIB_DIR) {
 } else {
     message("Using KSyntaxHighlighting provided at $${KSYNTAXHIGHLIGHTING_LIB_DIR}.")
 }
-
+message("libs.pro .3..................................")
 win32:SUBDIRS += utils/process_ctrlc_stub.pro
-
+message("libs.pro .4..................................")
 # Windows: Compile Qt Creator CDB extension if Debugging tools can be detected.
 win32: isEmpty(QTC_SKIP_CDBEXT) {
     include(qtcreatorcdbext/cdb_detect.pri)
@@ -69,5 +69,5 @@ win32: isEmpty(QTC_SKIP_CDBEXT) {
         message("environment variable pointing to your CDB installation.")
     }
 }
-
+message("libs.pro .5..................................")
 QMAKE_EXTRA_TARGETS += deployqt # dummy

@@ -1,17 +1,10 @@
-    # Optional, needed for the Clang Code Model if llvm-config is not in PATH:
-    export LLVM_INSTALL_DIR=/path/to/llvm (or "set" on Windows)
-    # Optional, disable Clang Refactoring
-    export QTC_DISABLE_CLANG_REFACTORING=1
-    # Optional, needed to let the QbsProjectManager plugin use system Qbs:
-    export QBS_INSTALL_DIR=/path/to/qbs
-    # Optional, needed for the Python enabled dumper on Windows
-    set PYTHON_INSTALL_DIR=D:\Programs\Python38
-    # Optional, needed to use system KSyntaxHighlighting:
-    set KSYNTAXHIGHLIGHTING_LIB_DIR to folder holding the KSyntaxHighlighting library
-    # if automatic deducing of include folder fails set KSYNTAXHIGHLIGHTING_INCLUDE_DIR as well
-    # both variables can also be passed as qmake variables
-    set SOURCE_DIRECTORY=D:\qt-creator-opensource-src-4.11.0\src
-
-    cd $SOURCE_DIRECTORY
-    qmake -r
-    nmake
+rem CALL "D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86
+rem set PATH=D:\Programs\Qt5.9.9\5.9.9\Src\qtbase\bin;D:\Qt-creator-build\qt5.9.9-vs13\qt-creator-opensource-src-4.11.0\bin;%PATH%
+set LLVM_INSTALL_DIR=D:\Programs\LLVM
+set CLANGFORMAT_LIBS=D:\Programs\LLVM\lib
+set QTC_DISABLE_CLANG_REFACTORING=1
+set PYTHON_INSTALL_DIR=D:\Programs\Python38
+set SOURCE_DIRECTORY=D:\Qt-creator-build\qt5.9.9-vs13\qt-creator-opensource-src-4.11.0\src
+cd /d ./src
+qmake -r
+nmake

@@ -1,4 +1,4 @@
-QT += qml quick
+QT += quick
 DEFINES += TRACING_LIBRARY
 
 include(../../qtcreatorlibrary.pri)

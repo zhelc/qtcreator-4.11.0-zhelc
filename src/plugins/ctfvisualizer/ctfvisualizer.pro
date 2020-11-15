@@ -1,8 +1,6 @@
 TARGET = CtfVisualizer
 TEMPLATE = lib
 
-QT += quick quickwidgets
-
 include(../../qtcreatorplugin.pri)
 include(ctfvisualizer_dependencies.pri)
 

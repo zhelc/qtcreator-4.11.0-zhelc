@@ -40,13 +40,8 @@ exists(src/shared/qbs/qbs.pro) {
     cache(QBS_RESOURCES_BUILD_DIR)
     QBS_RESOURCES_INSTALL_DIR = $$INSTALL_DATA_PATH/qbs
     cache(QBS_RESOURCES_INSTALL_DIR)
-    macx {
-        QBS_PLUGINS_BUILD_DIR = $${IDE_PLUGIN_PATH}
-        QBS_APPS_RPATH_DIR = @loader_path/../Frameworks
-    } else {
-        QBS_PLUGINS_BUILD_DIR = $$IDE_PLUGIN_PATH
-        QBS_APPS_RPATH_DIR = \$\$ORIGIN/../$$IDE_LIBRARY_BASENAME/qtcreator
-    }
+    QBS_PLUGINS_BUILD_DIR = $$IDE_PLUGIN_PATH
+    QBS_APPS_RPATH_DIR = \$\$ORIGIN/../$$IDE_LIBRARY_BASENAME/qtcreator
     cache(QBS_PLUGINS_BUILD_DIR)
     cache(QBS_APPS_RPATH_DIR)
     QBS_PLUGINS_INSTALL_DIR = $$INSTALL_PLUGIN_PATH
@@ -89,8 +84,7 @@ exists(src/shared/qbs/qbs.pro) {
 contains(QT_ARCH, i386): ARCHITECTURE = x86
 else: ARCHITECTURE = $$QT_ARCH
 
-macx: PLATFORM = "mac"
-else:win32: PLATFORM = "windows"
+win32: PLATFORM = "windows"
 else:linux-*: PLATFORM = "linux-$${ARCHITECTURE}"
 else: PLATFORM = "unknown"
 
@@ -105,18 +99,7 @@ linux {
     desktop.path = $$QTC_PREFIX/share/applications/
 
     INSTALLS += appstream desktop
-}
 
-macx {
-    APPBUNDLE = "$$OUT_PWD/bin/$${IDE_APP_TARGET}.app"
-    BINDIST_SOURCE.release = "$$OUT_PWD/bin/$${IDE_APP_TARGET}.app"
-    BINDIST_SOURCE.debug = "$$OUT_PWD/bin"
-    BINDIST_EXCLUDE_ARG.debug = "--exclude-toplevel"
-    deployqt.commands = $$PWD/scripts/deployqtHelper_mac.sh \"$${APPBUNDLE}\" \"$$[QT_INSTALL_BINS]\" \"$$[QT_INSTALL_TRANSLATIONS]\" \"$$[QT_INSTALL_PLUGINS]\" \"$$[QT_INSTALL_IMPORTS]\" \"$$[QT_INSTALL_QML]\"
-    codesign.commands = codesign --deep -s \"$(SIGNING_IDENTITY)\" $(SIGNING_FLAGS) \"$${APPBUNDLE}\"
-    dmg.commands = python -u \"$$PWD/scripts/makedmg.py\" \"$${BASENAME}.dmg\" \"Qt Creator\" \"$$IDE_SOURCE_TREE\" \"$$OUT_PWD/bin\"
-    #dmg.depends = deployqt
-    QMAKE_EXTRA_TARGETS += codesign dmg
 } else {
     BINDIST_SOURCE.release = "$(INSTALL_ROOT)$$QTC_PREFIX"
     BINDIST_EXCLUDE_ARG.release = "--exclude-toplevel"

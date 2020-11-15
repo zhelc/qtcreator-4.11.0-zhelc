@@ -7,6 +7,19 @@ Qt Creator is a cross-platform IDE for development with the Qt framework.
 The standalone binary packages support the following platforms:
 
 * Windows 7 or later
+* (K)Ubuntu Linux 16.04 (64-bit) or later
+* macOS 10.13 or later
+
+## Contributing
+
+For instructions on how to set up the Qt Creator repository to contribute
+patches back to Qt Creator, please check:
+
+https://wiki.qt.io/Setting_up_Gerrit
+
+See the following page for information about our coding standard:
+
+https://doc-snapshots.qt.io/qtcreator-extending/coding-style.html
 
 ## Compiling Qt Creator
 
@@ -19,6 +32,8 @@ Prerequisites:
     * MinGW with g++ 5.3 or Visual Studio 2017 or later
     * jom
     * Python 3.5 or later (optional, needed for the python enabled debug helper)
+* On Mac OS X: latest Xcode
+* On Linux: g++ 5.3 or later
 * LLVM/Clang 8.0.0 or later (optional, needed for the Clang Code Model, Clang Tools, ClangFormat,
   Clang PCH Manager and Clang Refactoring plugins, see the section
   "Get LLVM/Clang for the Clang Code Model". The LLVM C++ API provides no compatibility garantee,
@@ -60,6 +75,15 @@ compile Qt yourself, you can use one of the versions of Qt shipped with the Qt
 SDK (release builds of Qt using MinGW and Visual C++ 2017 or later).
 For detailed information on the supported compilers, see
 <https://wiki.qt.io/Building_Qt_5_from_Git> .
+
+   1.  Decide which compiler to use: MinGW or Microsoft Visual Studio. If you
+       plan to contribute to Qt Creator, you should compile your changes with
+       both compilers.
+
+   2.  Install Git for Windows from <https://git-for-windows.github.io/>. If you plan to
+       use the MinGW compiler suite, do not choose to put git in the
+       default path of Windows command prompts. For more information, see
+       step 9.
 
    3.  Create a working directory under which to check out Qt and Qt Creator,
        for example, `c:\work`. If you plan to use MinGW and Microsoft Visual
@@ -115,6 +139,13 @@ For detailed information on the supported compilers, see
 
         %SystemRoot%\system32\cmd.exe /E:ON /V:ON  /k <working_directory>\qtvars.bat
 
+   9.  When using MinGW, open the shell prompt and enter:
+
+        sh.exe
+
+       That should result in a `sh is not recognized as internal or external
+       command...` error. If a `sh.exe` is found, the compile process will fail.
+       You have to remove it from the path.
 
    10. To make use of the Clang Code Model:
 
@@ -272,6 +303,15 @@ offer CMake find packages, which reduce the steps of configuring Qt Creator to a
 
       mkdir build
       cd build
+
+    For Linux/macOS:
+
+      cmake \
+        -G Ninja \
+        -D CMAKE_BUILD_TYPE=Release \
+        -D CMAKE_PREFIX_PATH=~/Qt/5.12.5/gcc_64;~/llvm \
+        ../qt-creator
+      cmake --build .
 
     For Windows:
 

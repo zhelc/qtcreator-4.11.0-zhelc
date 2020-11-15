@@ -1,7 +1,5 @@
 DEFINES += STUDIOWELCOME_LIBRARY
 
-QT += quick quickwidgets
-
 include(../../qtcreatorplugin.pri)
 
 ## magic fix for unix builds

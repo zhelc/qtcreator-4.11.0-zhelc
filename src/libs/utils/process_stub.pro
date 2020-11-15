@@ -1,8 +1,8 @@
 CONFIG          += warn_on console use_c_linker
 CONFIG          -= qt app_bundle
-
+message("process_stub .1..................................")
 include(../../../qtcreator.pri)
-
+message("process_stub .2..................................")
 TEMPLATE        = app
 TARGET          = qtcreator_process_stub
 DESTDIR         = $$IDE_LIBEXEC_PATH
@@ -22,3 +22,4 @@ unix {
 
 target.path  = $$INSTALL_LIBEXEC_PATH
 INSTALLS    += target
+message("process_stub .3..................................")

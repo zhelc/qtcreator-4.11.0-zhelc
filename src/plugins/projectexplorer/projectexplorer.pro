@@ -1,4 +1,3 @@
-QT += qml
 
 include(../../qtcreatorplugin.pri)
 include(customwizard/customwizard.pri)
